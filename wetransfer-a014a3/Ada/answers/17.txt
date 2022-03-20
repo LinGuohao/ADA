@@ -1,0 +1,15 @@
+Q : What is a limited private type?
+
+Declaring the type as limited that means that objects of the type can not be assigned value of same type. (An Object b of limited type LT cannot be copied into an object a of same type LT).
+And there is no predefine equality for the limited type object. We tend to use limited types because it prevents the shallow copying and the unique identy of an object is retained 
+(once declared, a name of a variable of type LT will continue to refer to the same object).
+Examples :-
+ type Boat is limited private;
+
+     function Choose
+       (Load  : Sailors_Units;
+        Speed : Sailors_Units)
+        return  Boat;
+
+     procedure Set_Sail (The_Boat : in out Boat);
+Once we declare a variable to be of type Boat, this name will denote this exact Boat through its life cycle( Boats will not be copied into one another). 

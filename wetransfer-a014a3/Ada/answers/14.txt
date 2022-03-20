@@ -1,0 +1,4 @@
+Q : code snippet.
+
+First one : generice type parameter.
+Second one : simply belongs to the package.

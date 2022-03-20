@@ -1,0 +1,26 @@
+Q : What are the control sequences in Ada?
+
+As any programming language Ada has many control sequences and I will brifly mention some of them.
+If statements are used to deal with having a decision which will consequences based on it. so we will have a condition and extraction based on the result of the logicat condition.
+Example:
+if condition then
+    do_something
+end if;
+In Ada, we have many kind of loops.
+Example1:-
+while I <=10 loop
+    Ada.Integer_Text_IO.Put( I );
+    I := I + 1;
+end loop;
+this will loop will run till the condition will become false.
+Example2:-
+for variable in range loop
+    statements;
+end loop;
+this will loop for exact amount of time, and in this implentation i will be equal to different number in this range in every iteration.
+Example3:-
+loop
+    statements;
+    exit when condition;
+end loop;
+Similar to while loop but different implentation that make sure that at least, it will run once.

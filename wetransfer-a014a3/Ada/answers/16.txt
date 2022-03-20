@@ -1,0 +1,21 @@
+Q : Write examples of arrays and enumerate their attributes.
+
+An array is a collection of elements which can be accessed by one or more index values. 
+In Ada any definite type is allowed as element and any discrete type, i.e. Range, Modular or Enumeration, can be used as an index.
+Examples:-
+type Character_Counter is array (Character) of Natural; -- array of characters.
+type Temperature is range -10 .. +40; -- As I mentioned above, any discrete type can be used as index.
+type Experiment is array (Temperature ) of Integer;
+type String is array (Positive range <>) of Character; -- the indeces can be range of the discrete type.
+
+As we expect, since the array is very famous very famous data structure, there are a lot of attributes for it.
+But there are four attributes and they are the most important. And they are :'First, 'Last, 'Length and 'Range.
+And that is a brief explaination of their role with examples if needed.
+'First : returns the index of first element of the array.
+'Last : returns the index of last element of the array.
+'Length : return the Length of the array.
+'Range : return the range of the array, used a lot in for loops.
+Example:
+ for I in World'Range loop
+   ... World (I)...
+ end loop;

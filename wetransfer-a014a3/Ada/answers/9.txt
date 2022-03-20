@@ -1,0 +1,13 @@
+Q : What are the differences between a subtype and a new type?
+
+Subtype is generated subset of the base type, still being equivalent to base type.
+Subtype differences from new type are:
+- Subtypes can be used in place of parent types.
+- Values: New types create distinct sets of values, subtype values are subsets
+- Operations:
+    - Input and output: New types require new I/O package, subtypes don't
+    - Assignment: Distinct numeric types cannot be assigned to one another without conversion, subtypes of numberic types can be assigned to one another without conversion (although conversion is allowed).
+    - Overflow checks: With gnatmake, subtype assignment (ie subtype := supertype) checks for constraint error. With new types, checking may or may not occur by default.
+Note : Arithmetic and relational operators, assignment, and conversions are automatically defined for new types as well subtypes of course.
+Example of subtype : subtype MonthDay is Integer range 1 .. 31;
+Example of new type : type MonthDay is range 1 .. 31;

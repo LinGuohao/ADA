@@ -1,0 +1,71 @@
+Q: Describe the different select command types.
+
+We have many types of select in tasks. Let's start talking about receiver select. The importance of select command in the receiver,
+to avoid being held up when it could be doing productive work. and the idea behind the selective wait is that it allows the task to 
+wait for call to any numbers of entries.
+
+If we have more than one alternatice in select waiting, the implementation is free to accept any one of them. And of course this introduce
+the non-determinism into the program.
+
+Example :-
+ task type Encapsulated_Variable_Task_Type is
+     entry Store (An_Item : in  Item);
+     entry Fetch (An_Item : out Item);
+  end Encapsulated_Variable_Task_Type;
+  ...
+  task body Encapsulated_Variable_Task_Type is
+     Datum : Item;
+  begin
+     accept Store (An_Item : in Item) do
+        Datum := An_Item;
+     end Store;
+     loop
+        select   
+           accept Store (An_Item : in Item) do
+              Datum := An_Item;
+           end Store;
+        or
+           accept Fetch (An_Item : out Item) do
+              An_Item := Datum;
+           end Fetch;
+        end select;
+     end loop;
+  end Encapsulated_Variable_Task_Type;
+
+The other type we have is the caller select or "Conditional entry calls", in this case we have variety of ways which lead to different behaviours. "Select else"
+means that if you were able to call this task go to the branch if not immediately go to the other branch and execute.
+Example :-
+  select
+    Callee.Rendezvous;
+  else
+    Do_something_else;
+  end select;
+We have also "select or" which usually have delay in the last branch which means if the choosen branch is open and it can executed you can execute if not wait for
+the amount specified in the delay part and after this period, if the branch(s) still closed execute the rest of the delay branch and terminate.
+Example:
+  select
+    Callee.Rendezvous;
+  or
+    delay 1.0;
+    Do_something_else;
+  end select;
+
+"select or" with until in the last branch is very similar to "select or" with the delay in the last branch but we use it when we want to synchronize with our time and this
+can useful in a lot of application.
+Example:-
+task Professor;
+
+  task body Professor is
+  begin
+     Put_Line("Professor: I got some time before course.");
+     select
+       Go_in;
+       Barman.Order(Brandy);
+       delay 0.2;
+       Put_Line("Professor: it was good");
+       Go_out;
+     or
+       delay until Course;
+       Put_Line("Professor: goint to course");
+     end select;
+  end Professor;

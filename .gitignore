@@ -1,0 +1,10 @@
+*
+!*/
+!.gitignore
+!*.adb
+!*.ads
+!*.pdf
+!*.docx
+!*.txt
+!*.log
+!*.md

@@ -1,0 +1,13 @@
+Q : Why and where are generics used?
+
+Generics are used to be able to reuse the code for more than one data type, it is used when we need to use the same block of code for more than one data type.
+Example of generic :
+we want to have a swap procedure which swap the values of two variables, for sure a procedure like that should not care what the type of variables.
+generic
+  type Element_T is private;
+procedure Swap (X, Y : in out Element_T) is
+  Temporary : constant Element_T := X;
+begin
+  X := Y;
+  Y := Temporary;
+end Swap;

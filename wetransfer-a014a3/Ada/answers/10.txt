@@ -1,0 +1,1 @@
+Q : How can we define abstract data structures?

@@ -1,0 +1,17 @@
+Q : What is a protected unit in Ada?
+
+In any pallarism we usually face the problem of accessing the same resource by more than one task in the same time. Ada offers protected objects for mutual exclusion.
+One of the many benefits of the protected objects is that dead lock can be avoided. the protected object is a built-in limited type.
+A protected object consists of encapsulated private data (which can only be accessed from within the protected object), and procedures, functions and entries which are guaranteed to be mutually exclusive.
+A task calling a protected object is blocked if another task is currently executing inside the same protected object(guarding the critical part).
+
+Protected object entries are similar to procedures, but additionally have guards. 
+If a guard evaluates to false, a calling task is blocked and added to the queue of that entry; now another task can be admitted to the protected object, as no task is currently executing inside the protected object. 
+Guards are re-evaluated whenever a task leaves the protected object, as this is the only time when the evaluation of guards can be changed. 
+
+Example :-
+
+protected Screen is
+		entry Print ( s: in STRING );
+	end Screen;
+

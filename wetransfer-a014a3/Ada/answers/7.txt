@@ -1,0 +1,12 @@
+Q : Why is called Ada as strongly typed language?
+
+add : new type vs sub type
+Definiation of strong type language : A strongly-typed language is one in which variables are bound to specific data types, and will result in type errors if types do not match up as expected in the expression.
+So looking through this definiation, we can see clearly that ADA is strongly typed language since it follows the definiation.
+Also, Ada is perhaps the most strongly typed language in commercial use. Strong typing is seen as a tool to ensure data correctness. 
+C++, Java, and C# all claim to be strongly typed. Ada is more strongly typed than those languages. 
+Unlike C, C++, Java, or C#, Ada does not provide implicit conversions between numeric types. 
+Strong typing allows the compiler to identify some computational errors that can only be found through inspection, testing, or debugging in less strongly typed languages.
+
+Example: a : Integer; 
+That example shows a simple declaration of variable "a", this variable will always be treated as integer unless explicit conversion was applied on it.

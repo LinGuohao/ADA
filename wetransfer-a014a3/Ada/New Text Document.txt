@@ -1,0 +1,21 @@
+
+
+
+
+--if we are on the first row
+         if (g(i,j)>max and i=g'First(1)) loop
+            then
+               --if we are first row first column
+               -- we check first right nest
+               if (j=g'First(2) and g(i,Index'Succ(j))<max) then
+                  g(i,j) := g(i,j) - (g(i,j)-max) --(max- g(i,Index'Succ(j)) );
+                  g(i,Index'Succ(j));
+               end if;
+               --then down nest
+               if(g(i,j)>max and j=g'First(2) and g(Index'Succ(i),j)<max)  then
+                  g(i,j) := g(i,j) - 
+               end if;
+               
+               
+            end if;
+         end if;

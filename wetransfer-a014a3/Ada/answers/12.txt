@@ -1,0 +1,17 @@
+Q : What type of parameters can be used at generics? How can we instantiate generics?
+
+The generic unit declares generic formal parameters, which can be:
+    objects (of mode in or in out but never out)
+    types
+    subprograms
+    instances of another, designated, generic unit.
+In instantiating, we match the parameters that we need for the generic for example:
+that is the generic:
+    generic
+    type T is private;
+    with function "<" (A, B: T) return Boolean is <>;
+    function Maximum ( A, B: T ) return T;
+and that is how we instantiate it:
+    function I_Max is new Maximum( Integer, "<" );
+    function I_Min is new Maximum( Integer, ">" );
+    function F_Max is new Maximum( Float );

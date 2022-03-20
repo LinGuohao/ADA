@@ -1,0 +1,10 @@
+Q. How can we declare pointers?
+
+add : all to acess, more examples
+pointers in Ada are called Access types, and it points to an object located in certain address. We have different kind of access types
+in Ada and they are : Pool access, General access, Anonymous access and  Access to subprogram types.
+In order to declare a pool access type (pointer) in Ada, first you give base type, then you put type, name, is access, base type.
+Example:-
+type TArray is array( Integer range <> ) of Character;
+type Pointer is access TArray;
+Note: after just intialization the pointer is pointing to nothing (NULL).

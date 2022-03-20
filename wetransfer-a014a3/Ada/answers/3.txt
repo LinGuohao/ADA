@@ -1,0 +1,16 @@
+Q : What are the differences between a procedure and a function?
+
+add : syntax, symatics and arguments (functions can have only in) 
+procedure doesn't return any value, on the other hand function does return a value.
+Example for function :-
+function add(n1, n2 : Integer) return Integer is
+    result : Integer;
+begin
+    result := n1 + n2;
+    return result;
+end;
+Example for procedure :-
+procedure add(n1, n2 : in Integer; result : out Integer) is
+begin
+    result := n1 + n2;
+end

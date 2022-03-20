@@ -1,0 +1,37 @@
+Q : When are the tasks activated? When are the tasks terminated?
+
+tasks often contain infinite loops to allow them to service an arbitrary number of calls in succession. But control cannot leave a task's master until the task terminates, 
+so we need a way for a server to know when it should terminate. This is done by a terminate alternative in a selective wait.
+
+The task terminates when at least one terminate alternative is open, and there are no pending calls to its entries, and
+all other tasks of the same master are in the same state (or already terminated), and the task's master has completed (i.e. has run out of statements to execute).
+
+Example :
+
+task type Terminating_Buffer_Task_Type is
+     entry Insert (An_Item : in  Item);
+     entry Remove (An_Item : out Item);
+  end Terminating_Buffer_Task_Type;
+  ...
+  task body Terminating_Buffer_Task_Type is
+     Datum : Item;
+  begin
+     loop
+        select
+           accept Insert (An_Item : in  Item) do
+              Datum := An_Item;
+           end Insert;
+        or
+           terminate;
+        end select;
+        select
+           accept Remove (An_Item : out Item) do
+              An_Item := Datum;
+           end Remove;
+        or
+           terminate;
+        end select;
+     end loop;
+  end Terminating_Buffer_Task_Type;
+
+Tasks get activated when the program starts if it is static, or if it is dynamic, it waits for another task to call it from entry point (more on that on q.21)

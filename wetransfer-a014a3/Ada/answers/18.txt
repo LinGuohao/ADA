@@ -1,0 +1,50 @@
+Q : Describe the exception handling in Ada.
+
+At the beginning we have to define "Robustness", Robustness is the ability of a system or system component to behave “reasonably” when it detects an anomaly.
+
+So as expected from any system to have robustness, every programming language should offer tools to satisify that. Ada solution was exception handling which can
+be described in a simple way as you raise an exception, and a module should handle it (it can he handed in the same module or in another). 
+
+This solution is very popular among the different programming language and another benefit from it is that the module internal issue can be handle internaly. There are two kind of exception :
+predefined exceptions and user defined exceptions. examples of predefined exceptions : Constraint_Error: raised when a subtype’s constraint is not satisfied, 
+Storage_Error: raised by running out of storage, Tasking_Error: when a task cannot be activated because the operating system has not enough resources, e.g.
+As mentioned above we can define our own exceptions. Example : Line_Failed, Line_Closed: exception;. 
+
+In order to use exception handling, the exception should be raised first (the exception can be manually raised by user or it can be automatically raised) 
+and after that we should handle it in a proper way. 
+Example for automatically raised exception : 
+loop
+      declare
+      begin
+          Get_Line(Str,Len);
+          if Len <= Element'Width then
+              return Element'Value( Str(1..Len) );
+          else Skip_Line;
+          end if;
+      exception
+          when Constraint_Error => null; -- do nothing
+      end;
+end loop;
+Example for manually raised exception :
+procedure Push( V: in out Stack; E: in Elem ) is
+      begin
+       if Is_Full(V) then
+         raise Full_Stack;
+         else
+          V.Pointer := V.Pointer + 1;
+         V.Data(V.Pointer) := E;
+         end if;
+end;
+As you can see from the code snippet, we raised the error in this push function.
+procedure Insert( V: in out Stack ) is
+             data: Integer;
+        begin
+             Put("What would you like to insert? "); Get(data);
+             Push(V, data);
+        exception
+             when Full_Stack =>
+                     Put_Line("Stack is full!");
+        end Insert;
+In this procedure, we are using push function so we should handle the raised error if it occurs. We are using the key word "when" for that.
+
+At last, important note that handling part (after when key word) should be the last part of the block, so no other statements will be executed after it.

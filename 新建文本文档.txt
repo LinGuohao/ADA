@@ -1,0 +1,8 @@
+Put_Line(Natural'Image(Multiplicity(A,'O'))+Natural'Image(Multiplicity(A,'f'))+
+              Natural'Image(Multiplicity(A,' ')) + Natural'Image(Multiplicity(A,'o'))+
+                Natural'Image(Multiplicity(A,'u')) + Natural'Image(Multiplicity(A,'r'))+
+              Natural'Image(Multiplicity(A,'s')) + Natural'Image(Multiplicity(A,'e')) +
+                Natural'Image(Multiplicity(A,'I')) + Natural'Image(Multiplicity(A,'w'))+
+              Natural'Image(Multiplicity(A,'l')) + Natural'Image(Multiplicity(A,'g'))+
+                Natural'Image(Multiplicity(A,'t')) + 
+           );

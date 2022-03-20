@@ -1,0 +1,13 @@
+Q : How can we define records? What kind of records can be used?
+
+A record is a composite type that groups one or more fields. A field can be of any type, even a record.
+that is how we define record without discriminated :-
+ type Basic_Record is record
+       A : Integer;
+    end record;
+and that is the definiation for record with discriminated :-
+    type Discriminated_Record (Size : Natural) is record
+       A : String (1 .. Size);
+    end record;
+There are a lot of type of records in Ada i.e, "Null Record". But we focused this semester about basic records
+(records without discriminated) and discriminated record (record with discriminated).

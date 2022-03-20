@@ -1,0 +1,11 @@
+Q : How can we define default operators?
+
+looking to the below snippet of code, we can see that having such a definiation for default operators
+makes it easy on instantiation with types having this operator(s) already and makes the user life easer in general.
+    generic
+    type T is private;
+    with function "<" (A, B: T) return Boolean is <>;
+and for instantiation:
+    function I_Max is new Maximum( Integer, "<" );
+    function I_Min is new Maximum( Integer, ">" );
+    function F_Max is new Maximum( Float );

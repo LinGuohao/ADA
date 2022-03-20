@@ -1,0 +1,397 @@
+with Ada.Integer_Text_IO,Ada.Text_IO;
+use Ada.Integer_Text_IO, Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+package body String_Types is
+
+
+   function getAppIndex(start:Index;n:Natural) return Index is
+      i:Index:=start;
+   begin
+      for j in 1..n loop
+         i:=Index'Succ(i);
+      end loop;
+      return i;
+   end getAppIndex;
+   
+   function goBack(start:Index;n:Natural) return Index is
+         i:Index:=start;
+   begin
+      for j in 1..n loop
+         i:=Index'Pred(i);
+      end loop;
+      return i;
+   end goBack;
+   
+   function Init(S : TArray) return String_Type is
+      string:String_Type(getAppIndex(Index'First,S'Length-1));
+      ind:Index:=string.String'First;
+   begin
+      for I in S'Range loop
+         string.String(ind):=S(I);
+         ind:=Index'Succ(ind);
+
+      end loop;
+      string.Size:=S'Length;
+      return string;
+   end Init;
+
+   function Char_At(S : String_Type; i : Index) return Char is
+   begin
+      return S.String(i);
+   end Char_At;
+
+   procedure Compare_To(S1 : String_Type; S2 : String_Type; e: out Enum) is
+   begin
+      if(S1.Size=S2.Size) then
+         for I in S1.String'Range loop
+            if not (S1.String(I) = S2.String(I)) then
+               --return False;
+               --e:=Enum'Val(0);
+               null;
+            end if;
+         end loop;
+         e:=Enum'Val(0);
+         --return True;
+         
+      elsif (S1.Size<S2.Size) then
+           e:=Enum'Val(2);
+            --return False;
+         
+         
+      else
+         e:=Enum'Val(1);
+      end if;
+
+   end Compare_To;
+
+   function "+"(S1 : String_Type; S2 : String_Type) return String_Type is
+      rez:String_Type(S1'Size+S2'Size);
+      ind:Index:=rez.String'First;
+   begin
+
+      --for I in 1..S1.Size loop
+      for I in S1.String'Range loop
+         rez.String(ind):=S1.String(I);
+         ind:=Index'Succ(ind);
+      end loop;
+      --for J in 1..S2.Size loop
+      for J in S2.String'Range loop
+         --rez.String(J+S1.Size):=S2.String(J);
+         rez.String(ind):=S2.String(J);
+         ind:=Index'Succ(ind);
+      end loop;
+      rez.Size:=S1.Size+S2.Size;
+
+      return rez;
+   end "+";
+
+   function equalArr(a:TArray;b:TArray;n:Index) return Boolean is
+   begin
+
+      --Put(n);
+      for I in a'Range loop
+         if not(a(I)= b(I)) then
+            return False;
+         end if;
+
+      end loop;
+
+      return True;
+   end equalArr;
+
+   function equalArr2(a,b:TArray;i:Index) return Boolean is
+      ind:Index:=i;
+   begin
+      for I in b'Range loop
+         if not (a(ind)=b(I)) then
+            return False;
+         end if;
+         ind:=Index'Succ(ind);
+      end loop;
+      return True;
+
+
+   end equalArr2;
+
+
+
+   function Contains(S : String_Type; Sub : String_Type) return Boolean is
+      I:Index:=S.String'First;
+      L:Boolean:=False;
+   begin
+      if(S.Size<Sub.Size) then
+         return False;
+      end if;
+      --Put(S.Size);
+      while I<S.String'Last and (not L) loop
+         --Put(I);
+         L:=equalArr2(S.String,Sub.String,I);
+         I:=Index'Succ(I);
+      end loop;
+
+      return L;
+
+   end Contains;
+
+
+   function Contains(S : String_Type; Str : TArray) return Boolean is
+      st:String_Type(Str'Length):=Init(Str);
+   begin
+      return Contains(S,st);
+   end Contains;
+
+   
+   
+
+
+   function Ends_With(S : String_Type; Ending : String_Type) return Boolean is
+      ind:Index:=Index'First;
+   begin
+      if(Ending.Size > S.Size) then
+         return False;
+      end if;
+
+      for I in getAppIndex(Index'First,S.Size-Ending.Size+1)..S.String'Last loop
+         if S.String(I) /= Ending.String(ind) then
+            return False;
+         end if;
+         ind:=Index'Succ(ind);
+      end loop;
+      return True;
+
+   end Ends_With;
+
+
+
+
+   function Ends_With(S : String_Type; Ending : TArray) return Boolean is
+     str:String_Type(Ending'Length):=Init(Ending);
+   begin
+      return Ends_With(S,str);
+   end Ends_With;
+
+
+
+
+
+   function Index_Of(S : String_Type; C : Char) return Index is
+   begin
+      for I in S.String'Range loop
+         if S.String(I)=C then
+            return i;
+         end if;
+      end loop;
+      --return S.Size+1;
+      return S.String'Last;
+   end Index_Of;
+
+   function Index_Of(S : String_Type; C : Char; I : Index) return Index is
+   J :Index:=I;
+   begin
+      for i in J .. S.String'Last loop
+         if S.String(i)=C then
+            return i;
+         end if;
+
+      end loop;
+      --return S.Size+1;
+      return S.String'Last;
+   end Index_Of;
+
+
+   function Index_Of(S : String_Type; Str : TArray) return Index is
+      I:Index:=S.String'First;
+      L:Boolean:=False;
+      Sub:String_Type(Str'Length):=Init(Str);
+   begin
+
+      while I<S.String'Length and (not L) loop
+
+         L:=equalArr2(S.String,Sub.String,I);
+         I:=Index'Succ(I);
+      end loop;
+
+      return Index'Pred(I);
+
+   end Index_Of;
+
+
+
+   function Last_Index_Of(S : String_Type; Str : TArray) return Index is
+      L:Boolean:=False;
+      Sub:String_Type(Str'Length):=Init(Str);
+      I:Index:=getAppIndex(Index'First,S.Size-Sub.Size+1);
+   begin
+      --Put(I);
+      while I>Index'First and (not L) loop
+         L:=equalArr2(S.String,Sub.String,I);
+         I:=Index'Pred(I);
+      end loop;
+
+      return I;
+   end Last_Index_Of;
+
+
+
+
+   function Last_Index_Of(S : String_Type; C : Char) return Index is
+   begin
+      for I in reverse S.String'Range loop
+         if S.String(I)=C then
+            return I;
+         end if;
+      end loop;
+      return S.String'Last;
+   end Last_Index_Of;
+
+
+
+
+   function Length(S : String_Type) return Natural is
+   begin
+      return S.Size;
+   end Length;
+
+
+   function Starts_With(S : String_Type; Ending : String_Type) return Boolean is
+   begin
+      if(Ending.Size > S.Size) then
+         return False;
+      end if;
+
+      for I in Ending.String'Range loop
+         if not( S.String(I) = Ending.String(I)) then
+            return False;
+         end if;
+      end loop;
+      return True;
+   end Starts_With;
+
+   function Starts_With(S : String_Type; Ending : TArray) return Boolean is
+      str:String_Type(Ending'Length):=Init(Ending);
+   begin
+      return Starts_With(S,str);
+   end Starts_With;
+
+
+
+
+   procedure Replace(S : in out String_Type; Cold : Char; Cnew : Char) is
+   begin
+      for I in S.String'Range loop
+         if S.String(I)=Cold then
+            S.String(I):=Cnew;
+         end if;
+
+      end loop;
+
+   end;
+
+
+   function findDiff(a,b:Index) return Natural is
+      n:Natural:=0;
+   begin
+      for I in a..b loop
+         n:=n+1;
+      end loop;
+      
+      return n;
+   end findDiff;
+   
+
+
+
+   function createString(a:TArray;Starts : Index;Ending:Index) return TArray is
+      --str:Unbounded_String:=To_Unbounded_String("");
+      str:TArray(Index'First..getAppIndex(Starts,findDiff(Starts,Ending)));
+      ind:Index:=Index'First;
+   begin
+      for I in Starts..Ending loop
+         str(ind):=a(i);
+         ind:=Index'Succ(ind);
+      end loop;
+      --return To_String(str);
+      return str;
+   end createString;
+
+
+   function Substring(S : String_Type; Starts : Index) return String_Type is
+      size:Index:=getAppIndex(Index'First,findDiff(Starts,S.String'Last)+1);
+       final:String_Type(size):=Init(createString(S.String,Starts,S.String'Last));
+   begin
+
+      return final;
+
+   end Substring;
+
+   function SubString(S : String_Type; Starts : Index; Ends : Index) return String_Type is
+          final:String_Type(Ends-Starts+1):=Init(createString(S.String,Starts,Ends));
+   begin
+
+      return final;
+
+   end Substring;
+
+
+
+
+   function toString(S:String_Type) return TArray is
+   begin
+      
+      return S.String;
+   end toString;
+
+
+   function InitSpecial(S : TArray) return String_Type is
+         string:String_Type(42);
+      --i: Integer:=0;
+      ind:Index:=string.String'First;
+      begin
+         for I in S'Range loop
+            -- i:=i+1;
+         string.String(ind):=S(I);
+         ind:=Index'Succ(ind);
+
+         end loop;
+         string.Size:=S'Length;
+         return string;
+   end InitSpecial;
+
+
+   function splitAux(S : String_Type; Starts : Index; Ends : Index) return String_Type is
+
+      final:String_Type(42):=InitSpecial(createString(S.String,Starts,Ends));
+   begin
+
+      --Put_Line("inside aux");
+      return final;
+   end splitAux;
+
+   
+   
+
+   function Split(S : String_Type; Delim : Char) return String_Type_Array is
+         --procedure Split(S : String_Type; Delim : Character) is
+      emptyarr:TArray(Index'Succ(Index'First)..Index'First);
+      arr: String_Type_Array(S.String'Range):=(others=>InitSpecial(emptyarr));
+      I:Index:=S.String'First;
+      J:Index:=S.String'First;
+      ind:Index:=S.String'First;
+      --ptr:StringPtr:=new String_Type(S.Max);
+   begin
+      --Put_Line("inside split");
+      while I<=S.String'Length loop
+         --Put_Line("inside while");
+         if(S.String(I)=Delim) then
+            arr(ind):=splitAux(S,J,I-1);
+            J:=Index'Succ(J);
+            ind:=Index'Succ(ind);
+         end if;
+         I:=Index'Succ(I);
+      end loop;
+      return arr;
+   end Split;
+
+
+end String_Types;

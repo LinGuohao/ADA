@@ -1,0 +1,35 @@
+Q : How can we define a rendez-vous in Ada?
+
+The only entities that a task may export are entries. An entry looks like a procedure. 
+It has an identifier and can have all the available parameters of the procedure (in, out and in out). Communication between calls can be done by entries calls. 
+Information passes between tasks through the actual parameters of the entry call. We can encapsulate data structures within tasks and operate on them by means of entry calls.
+The main difference is that an entry is executed by the called task, not the calling task, which is suspended until the call completes. 
+If the called task is not ready to service a call on an entry, the calling task waits in a (FIFO) queue associated with the entry. 
+This interaction between calling task and called task is known as a rendezvous. The calling task requests rendezvous with a specific named task by calling one of its entries. 
+A task accepts rendezvous with any caller of a specific entry by executing an accept statement for the entry. If no caller is waiting, it is held up. Thus entry call and accept statement behave symmetrically.
+
+Example :-
+
+task type Encapsulated_Buffer_Task_Type is
+     entry Insert (An_Item : in  Item);
+     entry Remove (An_Item : out Item);
+  end Encapsulated_Buffer_Task_Type;
+  ...
+  Buffer_Pool : array (0 .. 15) of Encapsulated_Buffer_Task_Type;
+  This_Item   : Item;
+  ...
+  task body Encapsulated_Buffer_Task_Type is
+     Datum : Item;
+  begin
+     loop
+        accept Insert (An_Item : in  Item) do
+           Datum := An_Item;
+        end Insert;
+        accept Remove (An_Item : out Item) do
+           An_Item := Datum;
+        end Remove;
+     end loop;
+  end Encapsulated_Buffer_Task_Type;
+  ...
+  Buffer_Pool(1).Remove (This_Item);
+  Buffer_Pool(2).Insert (This_Item);

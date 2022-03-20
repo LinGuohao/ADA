@@ -1,0 +1,12 @@
+Q : What type of parameters can be defined in Ada? Can we define default parameter values? How?
+
+add : discriminated stuff.
+Parameters have different types like : in, out, in out. Yes, defining a default parameter values is a possiblity.
+Example for default parameter:-
+procedure p1 (A, B: in Integer := 0); -- This a declration for procedure with default parameter values
+-- This is how the procedure can be called.
+p1 (5, 7);      -- A = 5, B = 7
+p1 (5);         -- A = 5, B = 0
+p1;             -- A = 0, B = 0
+p1 (B => 3);    -- A = 0, B = 3
+p1 (1, B => 2); -- A = 1, B = 2

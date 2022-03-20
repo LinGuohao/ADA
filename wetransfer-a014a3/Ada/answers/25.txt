@@ -1,0 +1,57 @@
+Q : What is a semaphore?
+
+In  a concurrent system, we always face the issue of the possiblity of two or more processes, using the same resource in the same time. For example
+if two processes writing to the montior, this could lead to a lot of issues such that mixing words, etc. So semaphore came as programming concept to 
+try to control the access to a common resource by multiple processes, and to provide us solution for mutual exculsion. Also it helps to prevent the race
+suitation between the processes.
+
+Semaphore is a variable or another data type, and it was invented by Edsger Dijkstra, The implementation of semaphore can vary from one programming language
+to another.
+
+Example:-
+with text_io; use text_io;
+procedure semafor is
+
+	task type Print is
+		entry Init ( s: in STRING := "" );
+	end Print;
+
+	a, b: Print;
+
+	task Semaf is
+		entry P;
+		entry V;
+	end Semaf;
+
+	task body Semaf is
+	begin
+		loop
+			accept P;
+			accept V;
+		end loop;
+	end Semaf;
+
+	task body Print is
+		type PStr is access STRING;
+		nev: PStr;
+	begin
+	  accept Init ( s: in STRING := "" ) do 
+	  	nev := new STRING(1..s'length);
+		nev.all := s;
+	  end Init;
+	  for i in POSITIVE'range loop
+	    Semaf.P;
+	    Put_Line(nev.all & POSITIVE'IMAGE(i));
+	    Semaf.V;
+	  end loop;
+	end Print;
+
+begin
+	a.Init("John"); b.Init("Mary");
+end semafor;
+
+Looking to this example, we can deduce a lot. First we can see that the implementation for semaphore here is a task with two entry points. And as mentioned above the semaphore is
+not complicated in the implementation. So it is just a loop of acceting these different entry points. The semaphore here prevent the writing one the same line (i.e : JohnMary) and that it
+is because before writing print task calls the P entry point and after that writing and when it ends it calls the V entry point. So if another print task try to print while the other task
+printing it calls the P entry point but the semaphore here accepts only V entry point, so it puts this request on the queue (FIFO) and after the V entry point gets called. the task can print.
+And that is how semaphore provide mutual exculsion for critical parts of the code. 

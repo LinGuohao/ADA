@@ -1,0 +1,52 @@
+Q : How can we define parallel unit in Ada?
+
+As expected from Ada, it supports concurrency(pallarism) and the fundamental concurrent unit in Ada is a task, which is a built-in limited type.
+the task declaration defines the task interface (similar to a type declaration), the task body specifies the implementation of the task. 
+Depending on the implementation, Ada tasks are either mapped to operating system threads or processes, or are scheduled internally by the Ada runtime.
+And for sure we can have tasks with discriminants.
+
+We can have entries in tasks for synchronisation. Entries are declared in the task specification.
+Each task entry can have one or more accept statements within the task body. If the control flow of the task reaches an accept statement, the task is blocked until the corresponding entry is called by another task.
+
+In any pallarism we usually face the problem of accessing the same resource by more than one task in the same time. Ada offers protected objects for mutual exclusion.
+One of the many benefits of the protected objects is that dead lock can be avoided. the protected object is a built-in limited type.
+A protected object consists of encapsulated private data (which can only be accessed from within the protected object), and procedures, functions and entries which are guaranteed to be mutually exclusive.
+A task calling a protected object is blocked if another task is currently executing inside the same protected object(guarding the critical part).
+
+Example of simple task :-
+task body A is
+	begin
+	  for i in 1..POSITIVE'LAST loop
+	    Put_Line("A:"&POSITIVE'IMAGE(i));
+	  end loop;
+	end A;
+
+	task body B is
+	begin
+	  for i in 1..POSITIVE'LAST loop
+	    Put_Line("B:"&POSITIVE'IMAGE(i));
+	  end loop;
+	end B;
+
+Example of task with entry point:-
+task type Print is
+		entry Init ( s: in STRING := "" );
+	end Print;
+
+	a, b: Print;
+
+	task body Print is
+		type PStr is access STRING;
+		nev: PStr;
+	begin
+	  accept Init ( s: in STRING := "" ) do 
+	  	nev := new STRING(1..s'length);
+		nev.all := s;
+	  end Init;
+	  for i in POSITIVE'range loop
+	    Put_Line(nev.all & POSITIVE'IMAGE(i));
+	  end loop;
+	end Print;
+
+
+
